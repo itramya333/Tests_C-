@@ -1,0 +1,95 @@
+#include <bits/stdc++.h>
+
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+    
+/*Sort the word  and compare it  with the sorted words of strList.If same , then the list element is an anagram.
+ Add the anagram to the resultStr.
+ Here vector is used as container class as lookup is faster compared to list.
+ List STL is mainly used where lot of insertion and deletion operation takes place.Hence not used here*/
+ 
+vector<string> isAnagram( string word, vector<string> &strList) {
+    	 
+    vector<string> resultStr;
+    int wordLen = word.size();
+    
+    //Sort the word
+    string::iterator itrBeg = word.begin();
+    string::iterator itrEnd = word.end();
+    sort(itrBeg, itrEnd);
+    
+	//Loop through the list of strings
+    string str;
+	string orginalStr;
+    vector<string>::iterator it1;
+    
+    //Loop through all the words in the strList and sort them
+    for (it1 = strList.begin(); it1!=strList.end(); it1++){
+    	
+    	orginalStr = *it1; //Copy the original string to orginalStr for adding to the resultStr if it is anagram
+    	if(orginalStr.size() == wordLen){//Anagrams length will be same. if size not same, no need to sort the string		   	
+	    	str = orginalStr;
+	    	//Sort the  string
+	    	itrBeg= str.begin();
+	        itrEnd = str.end();
+	    	sort(itrBeg, itrEnd);
+	    	// Compare the sorted string with the word. If same , its an anagram and add to the resultStr
+	    	if( word == str){
+	    		resultStr.push_back(orginalStr);
+			}
+		}
+		
+    }
+    return resultStr;
+}
+
+void displayOutput(vector<string> list) {
+	
+	vector<string>::iterator itr;
+    if (list.empty())
+    	cout << "The list contains no anagram !"<<endl;
+    else
+    {	 
+    	cout<<"List of Anagrams: "<<endl;
+	    for (itr = list.begin(); itr!=list.end(); itr++){
+	    	
+	    	cout<<*itr<<endl;
+	    }
+	    
+	}
+	cout<<endl;
+}
+
+int main() {
+	
+	
+    vector<string> resultAnagram;
+    //UT 1
+    cout << "Test with 4 elements in list :  abc, {cba, sax, bac, cab } "<<endl;
+   	static const string strList[] = {"cba", "sax", "bac", "cab"};// List 
+	vector<string> vecList (strList, strList + sizeof(strList) / sizeof(strList[0]) );
+    
+    resultAnagram = isAnagram("abc" , vecList) ;
+    displayOutput(resultAnagram);
+    
+    //UT 2
+    cout << "Test with one element  which is not anagram :  abc, {sbx} "<<endl;
+    static const string strList2[]= {"sbx"};// List 
+	vector<string> vecList2 (strList2, strList2 + sizeof(strList2) / sizeof(strList2[0]) );
+    
+    resultAnagram = isAnagram("abc" , vecList2) ;
+    displayOutput(resultAnagram);
+    
+     //UT 3
+    cout << "Test with one element  which is  anagram :  creative, {reactive} "<<endl;
+    static const string strList3[]= {"reactive"};// List 
+	vector<string> vecList3 (strList3, strList3 + sizeof(strList3) / sizeof(strList3[0]) );
+    
+    resultAnagram = isAnagram("creative" , vecList3) ;
+    displayOutput(resultAnagram);
+    
+    
+    return 0;
+}
